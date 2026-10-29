@@ -580,6 +580,63 @@
         display: block;
       }
 
+      .student-login {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 32px;
+        align-items: center;
+        margin-bottom: 78px;
+        padding: 28px 32px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--white);
+      }
+
+      .student-login-copy h2 {
+        margin: 12px 0;
+      }
+
+      .student-login-copy p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.7;
+      }
+
+      .login-form {
+        display: grid;
+        gap: 13px;
+      }
+
+      .login-options {
+        display: flex;
+        align-items: center;
+      }
+
+      .login-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .login-toggle input {
+        width: 15px;
+        min-height: 15px;
+        margin: 0;
+        accent-color: var(--green);
+      }
+
+      .login-form .form-submit {
+        margin-top: 0;
+      }
+
+      .login-message {
+        margin-top: 0;
+      }
+
       .faq {
         display: grid;
         grid-template-columns: 0.8fr 1.2fr;
@@ -670,6 +727,12 @@
           padding: 32px;
         }
 
+        .student-login {
+          grid-template-columns: 1fr;
+          gap: 18px;
+          margin-bottom: 60px;
+        }
+
         .faq {
           grid-template-columns: 1fr;
           gap: 25px;
@@ -750,6 +813,11 @@
           border-radius: 21px;
         }
 
+        .student-login {
+          margin-bottom: 52px;
+          padding: 22px 16px;
+        }
+
         .form-card {
           padding: 20px 16px;
         }
@@ -794,7 +862,7 @@
       <nav class="nav" aria-label="Main navigation">
         <a href="#about">The event</a>
         <a href="#faq">FAQs</a>
-        <a class="nav-cta" href="#register">Register <span aria-hidden="true">↗</span></a>
+        <a class="nav-cta" href="#student-login">Student login <span aria-hidden="true">↗</span></a>
       </nav>
     </header>
 
@@ -832,6 +900,30 @@
           </div>
           <div class="floating-note">YOUR IDEA STARTS HERE ↗</div>
         </div>
+      </section>
+
+      <section class="shell student-login" id="student-login" aria-labelledby="login-title">
+        <div class="student-login-copy">
+          <div class="eyebrow"><span class="eyebrow-dot"></span> Student access</div>
+          <h2 id="login-title">Welcome back.</h2>
+          <p>Use your student email or ID to sign in to the campus portal.</p>
+        </div>
+        <form class="login-form" id="login-form">
+          <div class="field">
+            <label for="login-username">Student email or ID</label>
+            <input id="login-username" name="username" type="text" autocomplete="username" maxlength="200" placeholder="you@school.edu or student ID" required />
+          </div>
+          <div class="field">
+            <label for="login-password">Password</label>
+            <input id="login-password" name="password" type="password" autocomplete="current-password" required />
+          </div>
+          <div class="login-options">
+            <label class="login-toggle"><input id="show-password" type="checkbox" /> Show password</label>
+          </div>
+          <button class="button-primary form-submit" type="submit">Sign in</button>
+          <p class="privacy-note">Demo only: your password is not sent or saved. School account verification is not connected.</p>
+          <div class="form-message login-message" id="login-message" role="status" aria-live="polite"></div>
+        </form>
       </section>
 
       <section class="shell event-facts" aria-label="Event information">
@@ -971,6 +1063,26 @@
     <script>
       const registrationForm = document.querySelector("#registration-form");
       const formMessage = document.querySelector("#form-message");
+      const loginForm = document.querySelector("#login-form");
+      const loginPassword = document.querySelector("#login-password");
+      const loginMessage = document.querySelector("#login-message");
+
+      document.querySelector("#show-password").addEventListener("change", (event) => {
+        loginPassword.type = event.target.checked ? "text" : "password";
+      });
+
+      loginForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        if (!loginForm.reportValidity()) {
+          return;
+        }
+
+        loginPassword.value = "";
+        loginMessage.textContent =
+          "Sign-in is not connected yet. Your password was not sent or saved.";
+        loginMessage.classList.add("visible");
+      });
 
       registrationForm.addEventListener("submit", (event) => {
         event.preventDefault();
